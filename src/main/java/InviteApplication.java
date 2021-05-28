@@ -5,7 +5,6 @@ import java.util.List;
 
 public class InviteApplication {
 
-    public static final GeographicLocation INTERCOM_DUBLIN_OFFICE_GEOLOCATION = new GeographicLocation(53.339428, -6.257664);
     public static boolean verboseMode = false;
 
     public static void printHelp(Options options) {

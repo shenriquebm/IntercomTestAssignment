@@ -1,3 +1,5 @@
+import org.json.JSONException;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -19,7 +21,11 @@ public class CustomerFileReader {
         try {
             List<String> lines = Files.readAllLines(Paths.get(fileLocation));
             for (String line: lines) {
-                result.add(Customer.fromFileEntry(line));
+                try {
+                    result.add(Customer.fromFileEntry(line));
+                } catch (JSONException | InvalidGeographicLocationException e) {
+                    logger.log(Level.WARNING, "Invalid input format for customer. String = " + line + ". Skipping.");
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

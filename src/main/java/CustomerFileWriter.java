@@ -1,3 +1,5 @@
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,6 +13,10 @@ public class CustomerFileWriter {
 
     public CustomerFileWriter(String outputFileName) throws IOException {
         this.outputFileName = outputFileName;
+        createFile();
+    }
+
+    public void createFile() throws IOException {
         File outputFile = new File(outputFileName);
         boolean created = outputFile.createNewFile();
 
@@ -30,13 +36,21 @@ public class CustomerFileWriter {
 
         FileWriter writer = new FileWriter(outputFileName);
         for (Customer customer: customerList) {
-            writer.write(String.valueOf(customer));
-            writer.write('\n');
+            writer.write("{");
+            writer.write("\"latitude\": \"" + customer.getLocation().getLatitude() + "\", ");
+            writer.write("\"user_id\": " + customer.getUserId() + ", ");
+            writer.write("\"name\": \"" + customer.getName() + "\", ");
+            writer.write("\"longitude\": \"" + customer.getLocation().getLongitude() + "\"");
+            writer.write("}\n");
         }
         writer.close();
 
         if (InviteApplication.verboseMode) {
             logger.log(Level.INFO, "Finished writing output file.");
         }
+    }
+
+    public String getOutputFileName() {
+        return outputFileName;
     }
 }

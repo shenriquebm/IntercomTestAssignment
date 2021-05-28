@@ -1,5 +1,6 @@
 import org.json.JSONObject;
 
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -11,7 +12,7 @@ public class Customer {
 
     private static final Logger logger = Logger.getLogger(Customer.class.getName());
 
-    public static Customer fromFileEntry(String line) {
+    public static Customer fromFileEntry(String line) throws InvalidGeographicLocationException {
         JSONObject customerJson = new JSONObject(line);
         if (InviteApplication.verboseMode) {
             logger.log(Level.INFO, "Parsing new customer line " + line);
@@ -25,7 +26,7 @@ public class Customer {
     }
 
     // private constructor so we get customers only from file entry
-    private Customer(double latitude, double longitude, int userId, String name) {
+    private Customer(double latitude, double longitude, int userId, String name) throws InvalidGeographicLocationException {
         this.location = new GeographicLocation(latitude, longitude);
         this.userId = userId;
         this.name = name;
@@ -66,5 +67,18 @@ public class Customer {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return userId == customer.userId && location.equals(customer.location) && name.equals(customer.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(location, userId, name);
     }
 }

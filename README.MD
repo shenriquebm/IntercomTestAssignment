@@ -27,3 +27,13 @@ usage: invite_application
 -p,--print_output        Prints final output on screen.
 -v,--verbose             Be a little more verbose.
 ```
+
+----
+### Running tests
+
+To run just the tests, use the gradle task `test`. Using --info arg, will show all the outputs.
+
+If any tests fail, they will be reported on the screen.
+```shell
+gradle clean test --info
+```
